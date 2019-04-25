@@ -1,7 +1,7 @@
 require(xlsx)
 akiData<-read.xlsx("/Users/xmly/Documents/chenyue/data/input.xlsx",sheetIndex = 3)
 
-AKID<-akiData$AKI
+AKI<-akiData$AKI
 SSFSN<-akiData$SSFSN
 SSFS<-akiData$SSFS
 IABP<-akiData$IABP
@@ -19,22 +19,24 @@ print(ddist)
 options(datadist='ddist')
 
 require(rms)
-noHBA <- lrm(AKID ~ SSFS + IABP + HT + SQHB + AGE + HXBSZ + EGFR + DAY)
-noHBA
+noHBA <- lrm(AKI ~  SSFS + IABP + HT + SQHB + AGE + HXBSZ + EGFR + DAY)
 print(noHBA)
 summary(noHBA)
+anova(noHBA,test = "Chisq")
 cbind(coed<-coef(noHBA),confint(noHBA))
 exp(cbind(OR=coef(noHBA),confint(noHBA)))
 
-noHBAGLM <- glm(AKI ~ SSFSN + IABP + HT + SQHB + AGE + HXBSZ + EGFR + DAY)
+noHBAGLM <- glm(AKI ~  SSFS + IABP + HT + SQHB + AGE + HXBSZ + EGFR + DAY,data=akiData,family = binomial(link='logit'))
 print(noHBAGLM)
 summary(noHBAGLM)
+anova(noHBAGLM, test="Chisq")
 cbind(coed<-coef(noHBAGLM),confint(noHBAGLM))
 exp(cbind(OR=coef(noHBAGLM),confint(noHBAGLM)))
 
 HBAGLM <-  lrm(AKI ~ SSFS + IABP + HT + SQHB + AGE + HXBSZ + EGFR + DAY + HBA)
 print(HBAGLM)
 summary(HBAGLM)
+anova(HBAGLM,test="Chisq")
 
 cbind(coed<-coef(HBAGLM),confint(HBAGLM))
 exp(cbind(OR=coef(HBAGLM),confint(HBAGLM)))

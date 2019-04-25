@@ -6,10 +6,14 @@ formIABP.lin<-as.formula("AKI ~ IABP")
 linmodel<-glm(formIABP.lin,data=akiData,family=binomial())
 summary(linmodel)
 
-formHF.lin<-as.formula("AKI ~ HF")
+formHF.lin<-as.formula("AKI ~ SSFS")
 linmodel<-glm(formHF.lin,data=akiData,family=binomial())
+print(linmodel)
 summary(linmodel)
 
 require(rms)
-f <- lrm(AKI ~ SSFS)
+f <- lrm(AKI ~ SSFSN)
 print(f)
+summary(f)
+
+lrm()7
