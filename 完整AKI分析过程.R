@@ -5,7 +5,7 @@ data<-read.xlsx("/Users/xmly/Documents/chenyue/data/input.xlsx",sheetIndex = 4)
 #提取需要的数据
 AKI<-data$AKI
 operation.type<-data$operation.type
-IABP<-data$IABP
+cardiogenic.shock<-data$cardiogenic.shock
 LMD<-data$LMD
 LVEF<-data$LVEF
 CPB.used<-data$CPB.used
@@ -25,7 +25,7 @@ A1c<-data$A1c
 PO.BG<-data$PO.BG
 
 #为logistics分析lrm函数分析作准备
-ddist<-datadist(operation.type,IABP,LMD,LVEF,CPB.used,gender,hypertension,hyperlipidemia,ACS,cerebrovascular.diseases,contrast.medium.used,ACEI.ARB,
+ddist<-datadist(operation.type,cardiogenic.shock,LMD,LVEF,CPB.used,gender,hypertension,hyperlipidemia,ACS,cerebrovascular.diseases,contrast.medium.used,ACEI.ARB,
          statin,age,anemia,RBCT,eGFR,A1c,PO.BG)
 options(datadist = 'ddist')
 
@@ -37,8 +37,8 @@ otLrmModel
 summary(otLrmModel)
 anova(otLrmModel,test = "Chisq")
 
-#单因素分析，IABP
-iabpLrmModel<-lrm(AKI ~ IABP)
+#单因素分析，cardiogenic.shock
+iabpLrmModel<-lrm(AKI ~ cardiogenic.shock)
 iabpLrmModel
 summary(iabpLrmModel)
 anova(iabpLrmModel,test="Chisq")
@@ -154,19 +154,19 @@ summary(PO.BGLrmModel)
 anova(PO.BGLrmModel)
 
 #选出单因素分析有效的数据建模分析
-noHBALrmModel <- lrm(AKI ~ age + hypertension + anemia + IABP + eGFR + operation.type +  RBCT + PO.BG)
+noHBALrmModel <- lrm(AKI ~ age + hypertension + anemia + cardiogenic.shock + eGFR + operation.type +  RBCT + PO.BG)
 print(noHBALrmModel)
 summary(noHBALrmModel)
 anova(noHBALrmModel,test = "Chisq")
 
 #选出单因素分析有效的数据建模分析,包含A1c
-HBALrmModel <- lrm(AKI ~ age + hypertension + anemia + IABP + eGFR + operation.type +  RBCT + PO.BG + A1c)
+HBALrmModel <- lrm(AKI ~ age + hypertension + anemia + cardiogenic.shock + eGFR + operation.type +  RBCT + PO.BG + A1c)
 print(HBALrmModel)
 summary(HBALrmModel)
 anova(HBALrmModel,test = "Chisq")
 
 #从HBALrmModel中筛选出有效的自变量分析
-effectLrmModel<-lrm(AKI ~ hypertension + IABP + eGFR + RBCT + PO.BG)
+effectLrmModel<-lrm(AKI ~ hypertension + cardiogenic.shock + eGFR + RBCT + PO.BG)
 print(effectLrmModel)
 summary(effectLrmModel)
 anova(effectLrmModel,test="Chisq")
